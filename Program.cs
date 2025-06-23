@@ -18,6 +18,16 @@ public class Product
     }
 }
 
+public class Cart
+{
+    public Product[] Products { get; set; }
+
+    public Cart(Product[] products)
+    {
+        Products = products;
+    }
+}
+
 //using (XmlTextWriter writer = new XmlTextWriter("orders.xml", System.Text.Encoding.UTF8))
 //{
 //    writer.Formatting = Formatting.Indented;
