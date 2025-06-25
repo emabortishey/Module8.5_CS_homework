@@ -3,6 +3,23 @@ using System.Xml.Serialization;
 using System.Xml.Xsl;
 using static System.Console;
 
+// ZADANIE 1
+
+/*
+
+С страницы http://finance.i.ua/ (сохранить файл как html
+страницу). Выполнить экспорт курса доллара по всем
+банкам. Из input файла забрать только необходимую 
+информацию о названии банка, курсе покупки и продажи
+и записать ее в output.xml файл
+
+*/
+
+// (этой страницы как я поняла уже не существует и
+// я не стала эксперементировать с сохранением других
+// левых страниц, т.к. не знаю, можно ли будет считать
+// их также как необходимо в задании и получится ли вообще
+
 // ZADANIE 2
 
 /*
@@ -52,8 +69,19 @@ bun.LoadBunToXml("bun.xml");
 
 bun.TransformToHtml("bun.xml", "bun.xslt", "bun.html");
 
+// ZADANIE 4
+
+/*
+
+Прочитайте XML-документ, полученный в задании 2
+с помощью классов XmlDocument и XmlTextReader 
+и выведете полученную информацию на экран.
+
+*/
+
 bun.ReadWithXmlTextReader("bun.xml");
 
+// метод 1 товара
 public class Product
 {
     public string Name { get; set; }
@@ -72,6 +100,7 @@ public class Product
     }
 }
 
+// метод корзины (типо заказа 1 покупателя)
 public class Cart
 {
     public List<Product> Products { get; set; }
@@ -85,6 +114,8 @@ public class Cart
         OrderDesc = orderDesc;
     }
 
+    // метод для вычисления полной стоимости для
+    // дополнения файлов для правдоподобности заказов
     public int GetCost()
     {
         int ret = 0;
@@ -98,6 +129,7 @@ public class Cart
     }
 }
 
+// метод кучки заказов со списком корзин
 public class BunchOfOrders
 {
     public List<Cart> Carts { get; set; }
@@ -151,6 +183,9 @@ public class BunchOfOrders
         }
     }
 
+    // метод вывода заказов, я создала его для
+    // сравнения чтобы тестировать прошлый вариант
+    // получения данных файла, но он не пригодился
     public void PrintOrders()
     {
         foreach (var cart in Carts)
