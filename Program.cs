@@ -15,20 +15,25 @@ using static System.Console;
 
 BunchOfOrders bun = new BunchOfOrders
     (
-        new List<Cart>
+        new List<Cart>()
+        {
         (new Cart
-            ( new List<Product>(new Product("pr1", 1), new Product("pr2", 2), new Product("pr3", 3)), 
+            ( new List<Product>()
+                {
+                    new Product("pr1", 1), new Product("pr2", 2), new Product("pr3", 3)
+                },
                 "first order"
             )
         ),
         (new Cart
-            ( new List<Product>
-                (
+            ( new List<Product>()
+                {
                     new Product("pr4", 1), new Product("pr5", 2), new Product("pr6", 3)
-                ),
+                },
                 "second order"
             )
         )
+        }
     );
 
 public class Product
