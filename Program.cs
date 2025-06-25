@@ -1,4 +1,5 @@
 ﻿using System.Xml;
+using System.Xml.Serialization;
 using static System.Console;
 
 // ZADANIE 2
@@ -35,6 +36,8 @@ BunchOfOrders bun = new BunchOfOrders
         )
         }
     );
+
+bun.LoadBunToXml("bun.xml");
 
 public class Product
 {
@@ -89,37 +92,55 @@ public class BunchOfOrders
         Carts = new List<Cart>(carts);
     }
 
-    public void LoadBunchXml(string way)
+    public void LoadBunToXml(string way)
     {
         using (XmlTextWriter writer = new XmlTextWriter(way, System.Text.Encoding.UTF8))
         {
             writer.Formatting = Formatting.Indented;
+            writer.WriteStartDocument();
+            writer.WriteStartElement("Orders"); // Корневой элемент
 
-            foreach(var cart in Carts)
+            foreach (var cart in Carts)
             {
-                writer.WriteStartDocument();
-                writer.WriteStartElement("Orders");
-                writer.WriteStartElement("Products");
+                writer.WriteStartElement("Order");
 
-                foreach(var item in cart.Products)
+                // Описание заказа
+                writer.WriteElementString("Description", cart.OrderDesc);
+
+                // Товары
+                writer.WriteStartElement("Products");
+                foreach (var item in cart.Products)
                 {
                     writer.WriteStartElement("Product");
-                    writer.WriteElementString("Name: ", item.Name);
+                    writer.WriteElementString("Name", item.Name);
                     writer.WriteElementString("Price", item.Cost.ToString());
-                    writer.WriteEndElement();
+                    writer.WriteEndElement(); // завершение записи Product
                 }
+                writer.WriteEndElement(); // завершение записи Products
 
-                writer.WriteStartElement("Description");
-                writer.WriteStartElement(cart.OrderDesc);
-                writer.WriteStartElement("Price for the whole cart: ", cart.GetCost().ToString());
+                // Общая стоимость
+                writer.WriteElementString("TotalCost", cart.GetCost().ToString());
 
-                writer.WriteEndElement(); // Description
-                writer.WriteEndElement(); // Products
-                writer.WriteEndElement(); // Order
+                writer.WriteEndElement(); // завершение записи Order
             }
 
+            writer.WriteEndElement(); // завершение записи Orders
+            writer.WriteEndDocument();
+        }
+    }
 
+    public void PrintOrders()
+    {
+        foreach (var cart in Carts)
+        {
+            WriteLine($"\n{cart.OrderDesc}\n");
 
+            foreach (var item in cart.Products)
+            {
+                WriteLine(item.ToString());
+            }
+
+            WriteLine($"{cart.GetCost()}\n\n");
         }
     }
 }
